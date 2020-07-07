@@ -18,8 +18,6 @@ import net.boot.domain.userRepository;
 @RequestMapping("/users")
 public class UserController {
 	
-//	private List<User> users = new ArrayList<>();
-	
 	@Autowired
 	private userRepository userRepository;
 	
@@ -37,13 +35,13 @@ public class UserController {
 			return "redirect:/users/loginForm";
 		}
 		
-		if(!password.equals(user.getPassword())) {
+		if(!user.matchPassword(password)) {
 			System.out.println("로그인 실패!");
 			return "redirect:/users/loginForm";
 		}
 		
 		System.out.println("로그인 성공!");
-		httpSession.setAttribute("sessionedUser", user);
+		httpSession.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
 		
 		return "redirect:/";
 	}
@@ -78,13 +76,12 @@ public class UserController {
 	
 	@GetMapping("{id}/form")
 	public String updateForm(@PathVariable Long id, Model model, HttpSession httpSession) {
-		Object tempUser = httpSession.getAttribute("sessionedUser");
-		if(tempUser == null) {
+		if(HttpSessionUtils.isLoginUser(httpSession)) {
 			return "redirect:/users/loginForm";
 		}
 		
-		User sessionedUser = (User)tempUser;
-		if(!id.equals(sessionedUser.getId())) {
+		User sessionedUser = HttpSessionUtils.getUserFromSession(httpSession);
+		if(!sessionedUser.matchId(id)) {
 			throw new IllegalStateException("자신의 정보만 수정할 수 있습니다!");
 		}
 		
@@ -92,24 +89,15 @@ public class UserController {
 		model.addAttribute("user", user);
 		return "/user/updateForm";
 	}
-	
-//	@PostMapping("/{id}")
-//	public String update(@PathVariable Long id, User newUser) {
-//		User user = userRepository.findById(id).get();
-//		user.update(newUser);
-//		userRepository.save(user);
-//		return "redirect:/users";
-//	}
-	
+		
 	@PutMapping("/{id}")
 	public String update(@PathVariable Long id, User updatedUser, HttpSession httpSession) {
-		Object tempUser = httpSession.getAttribute("sessionedUser");
-		if(tempUser == null) {
+		if(HttpSessionUtils.isLoginUser(httpSession)) {
 			return "redirect:/users/loginForm";
 		}
 		
-		User sessionedUser = (User)tempUser;
-		if(!id.equals(sessionedUser.getId())) {
+		User sessionedUser = HttpSessionUtils.getUserFromSession(httpSession);
+		if(!sessionedUser.matchId(id)) {
 			throw new IllegalStateException("자신의 정보만 수정할 수 있습니다!");
 		}
 		
