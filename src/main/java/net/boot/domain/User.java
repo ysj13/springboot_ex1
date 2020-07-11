@@ -8,17 +8,28 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.Loader;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
-public class User {
+public class User extends AbstractEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonProperty
 	private Long id;
 	
 	@Column(nullable = false, length = 20, unique = true)
+	@JsonProperty
 	private String userId;
 	
+	@JsonIgnore
 	private String password;
+	
+	@JsonProperty
 	private String name;
+	
+	@JsonProperty
 	private String email;
 	
 	public Long getId() {

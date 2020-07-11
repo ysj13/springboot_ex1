@@ -76,7 +76,6 @@ public class QuestionController {
 		return Result.ok();
 	}
 	
-	
 	@PutMapping("/{id}")
 	public String update(@PathVariable Long id, String title, String contents, Model model, HttpSession httpSession) {	
 		Question question = questionRepository.findById(id).get();
@@ -98,10 +97,10 @@ public class QuestionController {
 		if(!result.isValid()) {
 			model.addAttribute("errorMessage", result.getErrorMessage());
 			return "/user/login";
-		}
+		} 
 		
 		questionRepository.deleteById(id);
-		return "/redirect:/";
+		return "redirect:/";
 	}
 }
 
