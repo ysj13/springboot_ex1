@@ -16,10 +16,10 @@
               <article class="article">
                   <div class="article-header">
                       <div class="article-header-thumb">
-                          <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
+                          <img src="https://image.flaticon.com/icons/svg/282/282122.svg" class="article-author-thumb" alt="">
                       </div>
                       <div class="article-header-text">
-                          <a href="/users/92/kimmunsu" class="article-author-name">{{writer.userId}}</a>
+                          <a href="#" class="article-author-name">{{writer.userId}}</a>
                           <a href="/questions/413" class="article-header-time" title="퍼머링크">
                               {{formattedCreateDate}}
                               <i class="icon-link"></i>
@@ -27,8 +27,15 @@
                       </div>
                   </div>
                   <div class="article-doc">
+                  <br />
                   	{{contents}}
                   </div>
+                  {{^sessionedUser}}
+                  <div class="article-util">
+                      <ul class="article-util-list"></ul>
+                  </div>
+                  {{/sessionedUser}}
+                  {{#sessionedUser}}
                   <div class="article-util">
                       <ul class="article-util-list">
                           <li>
@@ -45,6 +52,7 @@
                           </li>
                       </ul>
                   </div>
+                  {{/sessionedUser}}
               </article>
 
               <div class="qna-comment">
@@ -55,7 +63,7 @@
                           <article class="article" id="answer-1405">
                               <div class="article-header">
                                   <div class="article-header-thumb">
-                                      <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+                                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png" class="article-author-thumb" alt="">
                                   </div>
                                   <div class="article-header-text">
                                       <a href="/users/1/자바지기" class="article-author-name">{{writer.userId}}</a>
@@ -65,8 +73,10 @@
                                   </div>
                               </div>
                               <div class="article-doc comment-doc">
+                              <br />
                                   <p>{{contents}}</p>
                               </div>
+                              {{#sessionedUser}}
                               <div class="article-util">
                                   <ul class="article-util-list">
                                       <li>
@@ -77,6 +87,9 @@
                                       </li>
                                   </ul>
                               </div>
+                              {{/sessionedUser}}
+                              {{^sessionedUser}}
+                              {{/sessionedUser}}
                           </article>
                           {{/answers}}
                           <form class="answer-write" method="post" action="/api/questions/{{id}}/answers">
